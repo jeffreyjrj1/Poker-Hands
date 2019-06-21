@@ -11,6 +11,7 @@ Refactor:
   - Remove redundant methods and variables.
   - Expand enumeration for translating cards from rank Ten-Ace.
   - Add interfaces if possible.
+  - Unused class ParseHand, may have some use in the future?
   
 Features:
   - Allow a player to replace cards in hand.
