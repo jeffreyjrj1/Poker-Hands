@@ -29,47 +29,31 @@ public class ScoreHand extends Hand{
 
     public void findScore(){
         if(straightFlush()){
-            this.handRank = pokerHands.STRAIGHT_FLUSH;
-            this.score = 17;
             for (Card card: this.cards){
                 this.winnerHand.append(card.toString() + " ");
             }
         }
         else if(fourOfKind()){
-            this.handRank = pokerHands.FOUR_OF_A_KIND;
-            this.score = 15;
             this.winnerHand.append(this.ranks[this.threeOfKindPos] + "s");
         }
         else if(fullHouse()){
-            this.handRank = pokerHands.FULL_HOUSE;
-            this.score = 13;
             this.winnerHand.append(this.ranks[this.threeOfKindPos] + " over " + this.getPair());
         }
         else if(flush()){
-            this.handRank = pokerHands.FLUSH;
-            this.score = 11;
             for (Card card: this.cards){
                 this.winnerHand.append(card.toString() + " ");
             }
         }
         else if(straight()){
-            this.handRank = pokerHands.STRAIGHT;
-            this.score = 9;
             this.winnerHand.append("With high card " + this.ranks[this.highCard()]);
         }
         else if(threeOfKind()){
-            this.handRank = pokerHands.THREE_OF_A_KIND;
-            this.score = 7;
             this.winnerHand.append(this.ranks[this.threeOfKindPos] + "s");
         }
         else if(twoPair()){
-            this.handRank = pokerHands.TWO_PAIRS;
-            this.score = 5;
             this.winnerHand.append(this.getPair() + " and " + this.getNextPair());
         }
         else if(pair()){
-            this.handRank = pokerHands.PAIR;
-            this.score = 3;
             this.winnerHand.append(this.getPair() + "s");
         }
         else{
@@ -128,6 +112,8 @@ public class ScoreHand extends Hand{
     public boolean pair() {
         for (int i = 0; i < this.ranks.length; ++i) {
            if (this.cardsPerRank[i] == 2) {
+               this.handRank = pokerHands.PAIR;
+               this.score = 3;
                return true;
             }
         }
@@ -151,6 +137,8 @@ public class ScoreHand extends Hand{
                 ++pairCounter;
             }
             if (pairCounter == 2){
+                this.handRank = pokerHands.TWO_PAIRS;
+                this.score = 5;
                 return true;
             }
         }
@@ -160,7 +148,7 @@ public class ScoreHand extends Hand{
     public char getNextPair(){
         for (int i = this.highPairPos-1; i > 0; --i) {
             if (this.cardsPerRank[i] == 2){
-                this.highPairPos = i-1;
+                this.highPairPos = i;
                 return this.ranks[i];
             }
         }
@@ -173,6 +161,8 @@ public class ScoreHand extends Hand{
         for (int i = 0; i < this.ranks.length; ++i) {
             if (this.cardsPerRank[i] == 3) {
                 this.threeOfKindPos = i;
+                this.handRank = pokerHands.THREE_OF_A_KIND;
+                this.score = 7;
                 return true;
             }
         }
@@ -195,6 +185,8 @@ public class ScoreHand extends Hand{
         }
 
         if(consecutiveValueCards == 5){
+            this.handRank = pokerHands.STRAIGHT;
+            this.score = 9;
             return true;
         }
             return false;
@@ -203,6 +195,8 @@ public class ScoreHand extends Hand{
     public boolean flush(){
         for (int i = 0; i < this.suits.length; ++i) {
             if (this.cardsPerSuit[i] == 5) {
+                this.handRank = pokerHands.FLUSH;
+                this.score = 11;
                 return true;
             }
         }
@@ -211,6 +205,8 @@ public class ScoreHand extends Hand{
 
     public boolean fullHouse(){
         if(threeOfKind() && pair()){
+            this.handRank = pokerHands.FULL_HOUSE;
+            this.score = 13;
             return true;
         }
         return false;
@@ -220,6 +216,8 @@ public class ScoreHand extends Hand{
         for (int i = 0; i < this.ranks.length; ++i) {
             if (this.cardsPerRank[i] == 4) {
                 this.fourOfKindPos = i;
+                this.handRank = pokerHands.FOUR_OF_A_KIND;
+                this.score = 15;
                 return true;
             }
         }
@@ -228,6 +226,8 @@ public class ScoreHand extends Hand{
 
     public boolean straightFlush(){
         if(flush() && straight()) {
+            this.handRank = pokerHands.STRAIGHT_FLUSH;
+            this.score = 17;
             return true;
         }
         return false;
