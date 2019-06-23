@@ -2,10 +2,7 @@
 
 This is currently a WIP Poker Hand comparison exercise. As of right now, it is capable of generating two poker hands and determining a winner. Tie breakers follow the rules and guidlines of http://codingdojo.org/kata/PokerHands/ exercise. 
 
-TODO list:
-
-Exception Handling:
-  - Non-existant at the moment.
+# TODO list:
 
 Refactor:
   - Remove redundant methods and variables.
