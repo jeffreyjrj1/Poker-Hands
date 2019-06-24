@@ -5,10 +5,9 @@ This is currently a WIP Poker Hand comparison exercise. As of right now, it is c
 # TODO list:
 
 Refactor:
-  - Remove redundant methods and variables.
   - Expand enumeration for translating cards from rank Ten-Ace.
   - Add interfaces if possible.
-  - Unused class ParseHand, may have some use in the future?
+  - Need to work on Access modifiers for methods in class. (too many public methods that could be private)
   
 Features:
   - Allow a player to replace cards in hand.
