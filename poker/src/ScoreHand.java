@@ -1,8 +1,6 @@
 import java.util.ArrayList;
 
-public class ScoreHand extends Hand{
-    private final char ranks[] = {'2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K', 'A'};
-    private final char suits[] = {'C', 'D', 'H', 'S'};
+public class ScoreHand extends Hand implements ValidCards{
     private int cardsPerRank[] = new int[13];
     private int cardsPerSuit[] = new int[4];
     protected int highCardPos;
@@ -12,10 +10,10 @@ public class ScoreHand extends Hand{
     private int score;
 
     private StringBuilder winnerHand = new StringBuilder();
-    public pokerHands handRank;
 
     private ArrayList<Card> cards;
     private Hand player;
+    public pokerHands handRank;
 
     ScoreHand(){}
 
@@ -37,7 +35,7 @@ public class ScoreHand extends Hand{
             this.winnerHand.append(this.ranks[this.threeOfKindPos] + "s");
         }
         else if(fullHouse()){
-            this.winnerHand.append(this.ranks[this.threeOfKindPos] + " over " + this.getPair());
+            this.winnerHand.append(this.ranks[this.threeOfKindPos] + " over " + this.ranks[this.highPairPos]);
         }
         else if(flush()){
             for (Card card: this.cards){
@@ -51,10 +49,10 @@ public class ScoreHand extends Hand{
             this.winnerHand.append(this.ranks[this.threeOfKindPos] + "s");
         }
         else if(twoPair()){
-            this.winnerHand.append(this.getPair() + " and " + this.getNextPair());
+            this.winnerHand.append(this.ranks[this.highPairPos] + " and " + this.getNextPair());
         }
         else if(pair()){
-            this.winnerHand.append(this.getPair() + "s");
+            this.winnerHand.append(this.ranks[this.highPairPos] + "s");
         }
         else{
             this.handRank = pokerHands.HIGH_CARD;
@@ -89,14 +87,12 @@ public class ScoreHand extends Hand{
     }
 
     public int highCard(){
-        int highCardPosition = 0;
-
         for(int i = this.ranks.length-1; i >= 0; --i){
             if(this.cardsPerRank[i] > 0){
                 return this.highCardPos = i;
             }
         }
-        return this.highCardPos = highCardPosition;
+        return 0;
     }
 
     public int nextHighCard(){
@@ -112,6 +108,7 @@ public class ScoreHand extends Hand{
     public boolean pair() {
         for (int i = 0; i < this.ranks.length; ++i) {
            if (this.cardsPerRank[i] == 2) {
+               this.highPairPos = i;
                this.handRank = pokerHands.PAIR;
                this.score = 3;
                return true;
@@ -120,20 +117,11 @@ public class ScoreHand extends Hand{
         return false;
     }
 
-    public char getPair(){
-        for (int i = this.ranks.length-1; i >= 0 ; --i) {
-            if (this.cardsPerRank[i] == 2) {
-                this.highPairPos = i;
-                return this.ranks[i];
-            }
-        }
-        return '0';
-    }
-
     public boolean twoPair(){
         int pairCounter = 0;
         for (int i = 0; i < this.ranks.length; ++i) {
             if (this.cardsPerRank[i] == 2) {
+                this.highPairPos = i;
                 ++pairCounter;
             }
             if (pairCounter == 2){
@@ -146,7 +134,7 @@ public class ScoreHand extends Hand{
     }
 
     public char getNextPair(){
-        for (int i = this.highPairPos-1; i > 0; --i) {
+        for (int i = this.highPairPos-1; i >= 0; --i) {
             if (this.cardsPerRank[i] == 2){
                 this.highPairPos = i;
                 return this.ranks[i];
@@ -154,8 +142,6 @@ public class ScoreHand extends Hand{
         }
         return '0';
     }
-
-
 
     public boolean threeOfKind(){
         for (int i = 0; i < this.ranks.length; ++i) {
@@ -169,27 +155,16 @@ public class ScoreHand extends Hand{
         return false;
     }
 
-
-
-
-    public boolean straight(){
-        int consecutiveValueCards = 0;
-        this.highPairPos = this.highCard();
-        for (int i = 1; i < this.ranks.length; ++i) {
-            if (consecutiveValueCards == 0 && this.cardsPerRank[i] == 1){
-                ++consecutiveValueCards;
-            }
-            else if((this.cardsPerRank[i-1] == 1 && this.cardsPerRank[i] == 1) && i!=0){
-                ++consecutiveValueCards;
+    public boolean straight() {
+        this.highCardPos = this.highCard();
+        for (int i = this.highCardPos; i >= this.highCardPos - 4; --i) {
+            if (this.cardsPerRank[i] != 1) {
+                return false;
             }
         }
-
-        if(consecutiveValueCards == 5){
-            this.handRank = pokerHands.STRAIGHT;
-            this.score = 9;
-            return true;
-        }
-            return false;
+        this.handRank = pokerHands.STRAIGHT;
+        this.score = 9;
+        return true;
     }
 
     public boolean flush(){
