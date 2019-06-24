@@ -4,10 +4,13 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) throws Exception{
 
-
-
         //build new deck
         Deck deck = new Deck();
+
+        //Build a hand manually for testing purposes;
+//        ParseHand temp = new ParseHand();
+//        Hand white = temp.addCards("4H 5H 6H 7H 8H");
+
 
         //create white and black hands
         Hand white = new Hand();
@@ -23,10 +26,6 @@ public class Main {
 
         //determine a winner between the two hands.
         CompareHands winner = new CompareHands(black, white);
-
-
-
-
 
         return;
     }
