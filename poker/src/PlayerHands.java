@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 
-public class PlayerHands extends ParseHand{
+public class PlayerHands {
 
     private ArrayList<Hand> playerHands= new ArrayList<Hand>();
 
