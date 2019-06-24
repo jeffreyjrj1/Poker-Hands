@@ -2,9 +2,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 
-public class Deck {
-    private final char ranks[] = {'2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K', 'A'};
-    private final char suits[] = {'C', 'D', 'H', 'S'};
+public class Deck implements ValidCards {
     private ArrayList<Card> cards = new ArrayList<Card>();
 
     Deck(){
