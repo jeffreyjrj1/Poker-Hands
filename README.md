@@ -10,6 +10,7 @@ Refactor:
   - Need to work on Access modifiers for methods in class. (too many public methods that could be private)
   
 Features:
+  - PlayerHands class intended for comparing multiple hands. Valid class exist but not currently in use.
   - Allow a player to replace cards in hand.
   - Add more ranks such as royal flush etc.
   - ______
